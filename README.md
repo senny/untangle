@@ -1,3 +1,9 @@
+[![Build Status](https://travis-ci.org/senny/untangle.png?branch=master)](https://travis-ci.org/senny/untangle)
+[![Code Climate](https://codeclimate.com/badge.png)](https://codeclimate.com/github/senny/untangle)
+[![Dependency Status](https://gemnasium.com/senny/untangle.png)](https://gemnasium.com/senny/untangle)
+
+[![endorse](http://api.coderwall.com/senny/endorsecount.png)](http://coderwall.com/senny)
+
 # Untangle
 
 This gem provides a very lightweight API to specify dependencies
