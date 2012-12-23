@@ -12,10 +12,11 @@ module Untangle
 
     def register(name, subject = nil)
       subject = yield if block_given?
-      @subjects[name] = subject
+      @subjects[name.to_sym] = subject
     end
 
     def lookup(name)
+      name = name.to_sym
       @subjects[name] || handle_missing_subject(name)
     end
 

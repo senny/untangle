@@ -17,6 +17,18 @@ describe Untangle::Injector do
   end
 
   describe '#lookup ' do
+    it 'works with symbols' do
+      subject.register 'text', 'reminder'
+
+      subject.lookup(:text).should == 'reminder'
+    end
+
+    it 'works with strings' do
+      subject.register :text, 'reminder'
+
+      subject.lookup('text').should == 'reminder'
+    end
+
     it 'returns registered subjects' do
       subject.register :buffer_factory, String
       subject.lookup(:buffer_factory).should == String
