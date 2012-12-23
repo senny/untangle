@@ -16,5 +16,6 @@ Gem::Specification.new do |gem|
   gem.version       = Untangle::VERSION
 
   gem.add_dependency 'activesupport', '>= 3.0'
+  gem.add_development_dependency 'rake'
   gem.add_development_dependency 'rspec'
 end
