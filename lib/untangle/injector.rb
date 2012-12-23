@@ -1,3 +1,5 @@
+# inspired by https://github.com/garybernhardt/raptor/blob/master/lib/raptor/injector.rb
+
 require 'active_support/inflector'
 
 module Untangle
