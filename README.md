@@ -93,6 +93,22 @@ end
 Untangle.inject(MyProcess, :new)
 ```
 
+### Scopes [WIP]
+
+Untangle supports different scopes. This allows you to define
+dependencies for different timespans.
+
+```ruby
+Untangle.register(:locale, :en)
+
+Untangle.enter(:request)
+
+# register a dependency within the request scope
+Untangle.register_in(:request, :locale, I18n.locale)
+
+Untangle.exit(:request)
+```
+
 ### Testing
 
 A key concept behind untangle are isolated unit-tests. When testing in
