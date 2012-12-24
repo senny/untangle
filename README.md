@@ -133,7 +133,7 @@ class SomeProcess
 end
 
 describe SomeProcess do
-  let(:billing_service) { described_class.injector.lookup(:billing_service) }
+  let(:billing_service) { described_class.injector.get(:billing_service) }
   it 'should bill subscribed users' do
     subscriber = stub(:subscribed? => true)
 

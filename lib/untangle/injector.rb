@@ -16,14 +16,14 @@ module Untangle
       add_binding(name, binding)
     end
 
-    def lookup(name)
+    def get(name)
       name = name.to_sym
       (@bindings[name] && @bindings[name].resolve) || handle_missing_subject(name)
     end
 
     def inject(method)
       arguments = parameters(injection_method(method)).map { |type, name|
-        lookup(name)
+        get(name)
       }
       method.call(*arguments)
     end
@@ -35,7 +35,7 @@ module Untangle
 
     def handle_missing_subject(name)
       if @parent_injector
-        @parent_injector.lookup(name)
+        @parent_injector.get(name)
       else
         name.to_s.classify.constantize
       end

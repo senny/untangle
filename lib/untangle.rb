@@ -21,8 +21,8 @@ module Untangle
     injector.register(name, dependency)
   end
 
-  def self.lookup(name)
-    injector.lookup(name)
+  def self.get(name)
+    injector.get(name)
   end
 
   def self.inject(method)
@@ -45,7 +45,7 @@ module Untangle
     custom_injector.register name, *args, &block
     untangled_dependencies.instance_eval do
       define_method name do
-        custom_injector.lookup(name)
+        custom_injector.get(name)
       end
       private name
     end

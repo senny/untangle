@@ -7,41 +7,41 @@ describe Untangle::Injector do
   describe '#register' do
     it 'adds a dependency for later injection' do
       subject.register :message, 'my name is Jane'
-      subject.lookup(:message).should == 'my name is Jane'
+      subject.get(:message).should == 'my name is Jane'
     end
 
     it 'works with a block' do
       subject.register(:greet) {'welcome'}
-      subject.lookup(:greet).should == 'welcome'
+      subject.get(:greet).should == 'welcome'
     end
 
     it 'block is not executed when a injectable is passed' do
       subject.register(:number, 7) { raise 'block should not be called' }
-      subject.lookup(:number).should == 7
+      subject.get(:number).should == 7
     end
   end
 
-  describe '#lookup ' do
+  describe '#get ' do
     it 'works with symbols' do
       subject.register 'text', 'reminder'
 
-      subject.lookup(:text).should == 'reminder'
+      subject.get(:text).should == 'reminder'
     end
 
     it 'works with strings' do
       subject.register :text, 'reminder'
 
-      subject.lookup('text').should == 'reminder'
+      subject.get('text').should == 'reminder'
     end
 
     it 'returns registered subjects' do
       subject.register :buffer_factory, String
-      subject.lookup(:buffer_factory).should == String
+      subject.get(:buffer_factory).should == String
     end
 
     context 'without registered subject' do
       it 'turns the name into a constant' do
-        subject.lookup(:hash).should == Hash
+        subject.get(:hash).should == Hash
       end
     end
   end
@@ -79,14 +79,14 @@ describe Untangle::Injector do
     it 'returns dependencies from the parent injector' do
       parent_injector.register :eleven, 11
 
-      subject.lookup(:eleven).should == 11
+      subject.get(:eleven).should == 11
     end
 
     it 'overwrites parent dependencies with the same name' do
       parent_injector.register :name, 'Sophie'
       subject.register :name, 'Sandy'
 
-      subject.lookup(:name).should == 'Sandy'
+      subject.get(:name).should == 'Sandy'
     end
   end
 end

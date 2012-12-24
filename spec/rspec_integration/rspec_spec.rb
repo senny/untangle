@@ -16,7 +16,7 @@ describe 'rspec integration' do
   subject { SomeProcess.new }
 
   context 'manual exposure' do
-    let(:billing_service) { SomeProcess.injector.lookup(:billing_service) }
+    let(:billing_service) { SomeProcess.injector.get(:billing_service) }
 
     it 'allows for access through the injector' do
       subscriber = stub(:subscribed? => true)
@@ -36,7 +36,6 @@ describe 'rspec integration' do
   end
 
   context 'automatic exposure' do
-
     include SomeProcess.untangled_dependencies
 
     it 'allows for direct access' do

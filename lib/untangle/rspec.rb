@@ -16,11 +16,7 @@ module Untangle
       end
 
       def handle_missing_subject(name)
-        if @parent_injector
-          @parent_injector.lookup(name)
-        else
-          raise MissingInjectableError, "no injectable configured for '#{name}'"
-        end
+        raise MissingInjectableError, "no injectable configured for '#{name}'"
       end
       private :handle_missing_subject
 
