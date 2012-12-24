@@ -7,17 +7,18 @@ module Untangle
 
     def initialize(parent_injector = nil)
       @parent_injector = parent_injector
-      @injectables = {}
+      @bindings = {}
     end
 
-    def register(name, subject = nil)
-      subject ||= yield if block_given?
-      add_injectable(name, subject)
+    def register(name, value = nil, &block)
+      binding = ValueBinding.new(value) unless value.nil?
+      binding ||= BlockBinding.new(block) if block_given?
+      add_binding(name, binding)
     end
 
     def lookup(name)
       name = name.to_sym
-      @injectables[name] || handle_missing_subject(name)
+      (@bindings[name] && @bindings[name].resolve) || handle_missing_subject(name)
     end
 
     def inject(method)
@@ -27,10 +28,10 @@ module Untangle
       method.call(*arguments)
     end
 
-    def add_injectable(name, injectable)
-      @injectables[name.to_sym] = injectable
+    def add_binding(name, binding)
+      @bindings[name.to_sym] = binding
     end
-    private :add_injectable
+    private :add_binding
 
     def handle_missing_subject(name)
       if @parent_injector
@@ -54,5 +55,25 @@ module Untangle
       end
     end
     private :injection_method
+  end
+
+  class ValueBinding
+    def initialize(value)
+      @value = value
+    end
+
+    def resolve
+      @value
+    end
+  end
+
+  class BlockBinding
+    def initialize(block)
+      @block = block
+    end
+
+    def resolve
+      @block.call
+    end
   end
 end

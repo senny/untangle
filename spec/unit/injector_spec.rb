@@ -4,7 +4,7 @@ require 'untangle/injector'
 
 describe Untangle::Injector do
 
-  describe '#register ' do
+  describe '#register' do
     it 'adds a dependency for later injection' do
       subject.register :message, 'my name is Jane'
       subject.lookup(:message).should == 'my name is Jane'

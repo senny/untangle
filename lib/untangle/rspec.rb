@@ -7,11 +7,12 @@ module Untangle
       include RSpec::Mocks::ExampleMethods
 
       def provide(name, injectable)
-        add_injectable(name, injectable)
+        add_binding(name, ValueBinding.new(injectable))
+        injectable
       end
 
       def register(name, *args)
-        add_injectable(name, mock(name.to_s))
+        add_binding(name, ValueBinding.new(mock(name.to_s)))
       end
 
       def handle_missing_subject(name)
