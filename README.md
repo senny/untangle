@@ -144,6 +144,24 @@ describe SomeProcess do
 end
 ```
 
+If you don't want to define every dependency explicitly using `let`
+you can include `#untangled_dependencies` to give your tests automatic
+access.
+
+```ruby
+describe SomeProcess do
+  include SomeProcess.untangled_dependencies
+
+  it 'should bill subscribed users' do
+    subscriber = stub(:subscribed? => true)
+
+    billing_service.should_receive(:bill).with(subscriber)
+
+    subject.bill([subscriber])
+  end
+end
+```
+
 The rspec injector builds `RSpec::Mocks::Mock` objects. Of course
 there are times when you need to inject your own mocks:
 

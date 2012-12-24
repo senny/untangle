@@ -85,6 +85,8 @@ describe 'Dependency definitions' do
   describe 'self extended Module' do
     subject { ExampleModule }
 
+    before { subject.extend ExampleModule.untangled_dependencies }
+
     it_behaves_like 'definition with explicit dependencies'
   end
 end

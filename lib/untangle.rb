@@ -33,14 +33,23 @@ module Untangle
     @injector ||= Untangle.build_injector(Untangle.injector)
   end
 
+  def untangled_dependencies
+    return @untangled_dependencies if @untangled_dependencies
+    @untangled_dependencies = Module.new
+    include @untangled_dependencies
+    @untangled_dependencies
+  end
+
   def dependency(name, *args, &block)
     custom_injector = injector
     custom_injector.register name, *args, &block
-
-    define_method name do
-      custom_injector.lookup(name)
+    untangled_dependencies.instance_eval do
+      define_method name do
+        custom_injector.lookup(name)
+      end
+      private name
     end
-    private name
+
   end
 end
 
