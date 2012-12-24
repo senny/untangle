@@ -6,9 +6,22 @@ module Untangle
 
       include RSpec::Mocks::ExampleMethods
 
-      def register(name, *args)
-        super(name, mock("#{name}"))
+      def provide(name, injectable)
+        add_injectable(name, injectable)
       end
+
+      def register(name, *args)
+        add_injectable(name, mock(name.to_s))
+      end
+
+      def handle_missing_subject(name)
+        if @parent_injector
+          @parent_injector.lookup(name)
+        else
+          raise MissingInjectableError, "no injectable configured for '#{name}'"
+        end
+      end
+      private :handle_missing_subject
 
     end
   end

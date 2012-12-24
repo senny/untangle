@@ -143,3 +143,30 @@ describe SomeProcess do
   end
 end
 ```
+
+The rspec injector builds `RSpec::Mocks::Mock` objects. Of course
+there are times when you need to inject your own mocks:
+
+```ruby
+class MockBillingService
+  attr_reader :billed
+  def initialize
+    @billed = []
+  end
+
+  def bill(user)
+    @billded << user
+  end
+end
+
+describe SomeProcess do
+  let(:billing_service) { described_class.injector.provide(:billing_service, MockBillingService.new) }
+  it 'should bill subscribed users' do
+    subscriber = stub(:subscribed? => true)
+
+    subject.bill([subscriber])
+
+    billing_service.billed.should == [subscriber]
+  end
+end
+```

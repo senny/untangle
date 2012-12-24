@@ -7,17 +7,17 @@ module Untangle
 
     def initialize(parent_injector = nil)
       @parent_injector = parent_injector
-      @subjects = {}
+      @injectables = {}
     end
 
     def register(name, subject = nil)
-      subject = yield if block_given?
-      @subjects[name.to_sym] = subject
+      subject ||= yield if block_given?
+      add_injectable(name, subject)
     end
 
     def lookup(name)
       name = name.to_sym
-      @subjects[name] || handle_missing_subject(name)
+      @injectables[name] || handle_missing_subject(name)
     end
 
     def inject(method)
@@ -26,6 +26,11 @@ module Untangle
       }
       method.call(*arguments)
     end
+
+    def add_injectable(name, injectable)
+      @injectables[name.to_sym] = injectable
+    end
+    private :add_injectable
 
     def handle_missing_subject(name)
       if @parent_injector

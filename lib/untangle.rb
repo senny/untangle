@@ -3,6 +3,8 @@ require "untangle/injector"
 
 module Untangle
 
+  class MissingInjectableError < StandardError; end
+
   def self.injector_factory=(injector_factory)
     @injector_factory = injector_factory
   end

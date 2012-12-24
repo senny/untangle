@@ -14,6 +14,11 @@ describe Untangle::Injector do
       subject.register(:greet) {'welcome'}
       subject.lookup(:greet).should == 'welcome'
     end
+
+    it 'block is not executed when a injectable is passed' do
+      subject.register(:number, 7) { raise 'block should not be called' }
+      subject.lookup(:number).should == 7
+    end
   end
 
   describe '#lookup ' do
