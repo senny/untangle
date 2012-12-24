@@ -13,13 +13,13 @@ between objects. The key concepts behind it are:
 * Depend on roles, not implementation
 * Simplify testing by substituting your dependencies with mocks
 
-## Installation
+### Installation
 
-```ruby
+```shell
 gem install untangle
 ```
 
-## Define Dependencies
+### Define Dependencies
 
 **explicit**
 
@@ -58,7 +58,7 @@ class Person
 end
 ```
 
-## Global Dependencies
+### Global Dependencies
 
 If you have global dependencies, which are used throughout your app,
 you can register them globally. This way you can use `dependency`
@@ -93,4 +93,38 @@ end
 Untangle.inject(MyProcess, :new)
 ```
 
-## Testing
+### Testing
+
+A key concept behind untangle are isolated unit-tests. When testing in
+complete isolation you need to substitute real dependencies with
+mocks. Untangle has a custom injector for exaclty this purpose:
+
+
+**rspec**
+
+```ruby
+require 'untangle/rspec'
+
+class SomeProcess
+  extend Untangle
+
+  dependency :billing_service
+
+  def bill(users)
+    users.each do |user|
+      billing_service.bill(user) if user.subscribed?
+    end
+  end
+end
+
+describe SomeProcess do
+  let(:billing_service) { described_class.injector.lookup(:billing_service) }
+  it 'should bill subscribed users' do
+    subscriber = stub(:subscribed? => true)
+
+    billing_service.should_receive(:bill).with(subscriber)
+
+    subject.bill([subscriber])
+  end
+end
+```

@@ -2,8 +2,17 @@ require "untangle/version"
 require "untangle/injector"
 
 module Untangle
+
+  def self.injector_factory=(injector_factory)
+    @injector_factory = injector_factory
+  end
+
+  def self.build_injector(parent = nil)
+    @injector_factory.call(parent)
+  end
+
   def self.injector
-    @injector ||= Injector.new
+    @injector ||= build_injector
   end
 
   def self.register(name, dependency)
@@ -19,7 +28,7 @@ module Untangle
   end
 
   def injector
-    @injector ||= Injector.new(Untangle.injector)
+    @injector ||= Untangle.build_injector(Untangle.injector)
   end
 
   def dependency(name, *args, &block)
@@ -31,4 +40,8 @@ module Untangle
     end
     private name
   end
+end
+
+Untangle.injector_factory = lambda do |parent|
+  Untangle::Injector.new(parent)
 end
