@@ -30,11 +30,11 @@ dependency. The reference can either be a String:
 class Person
   extend Untangle
 
-  dependency :translator, 'I18n'
+  dependency :translator, I18n
 end
 ```
 
-or a block:
+or a block to defer evaluation:
 
 ```ruby
 class Person
@@ -65,7 +65,7 @@ you can register them globally. This way you can use `dependency`
 implicit definitions without a name that corresponds to the implementation.
 
 ```ruby
-Untangle.register :translator, 'I18n'
+Untangle.register :translator, I18n
 
 class Blog
   extend Untangle
@@ -79,8 +79,8 @@ constructor. This technique does not require that the object under
 construction knows about `explicit_dependencies`
 
 ```ruby
-Untangle.register :translator, 'I18n'
-ExplicitDependencies.register :people_repository, 'PeopleRepository'
+Untangle.register :translator, I18n
+Untangle.register :people_repository, PeopleRepository
 
 class MyPrcoess
 
@@ -98,7 +98,6 @@ Untangle.inject(MyProcess, :new)
 A key concept behind untangle are isolated unit-tests. When testing in
 complete isolation you need to substitute real dependencies with
 mocks. Untangle has a custom injector for exaclty this purpose:
-
 
 **rspec**
 
